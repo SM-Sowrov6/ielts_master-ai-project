@@ -1,0 +1,6 @@
+{
+  "name": "IELTS Writing Master",
+  "description": "Generate high-quality IELTS Academic Writing Task 1 and Task 2 answers, practice Reading and Listening, and practice real-time IELTS Speaking with our interactive AI examiner.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

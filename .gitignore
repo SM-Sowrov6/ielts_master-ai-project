@@ -1,0 +1,21 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+# Root
+.env
+.env.*
+
+# Allow example files
+!.env.example
+!.env.local.example
+
+# Nested env files
+**/.env
+**/.env.local
+**/.env.production
+**/.env.development
