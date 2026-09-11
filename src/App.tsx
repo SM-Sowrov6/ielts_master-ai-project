@@ -24,7 +24,8 @@ import {
   Headphones,
   Mic,
   Heart,
-  ArrowUp
+  ArrowUp,
+  LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +44,7 @@ import HomePage from "@/src/components/HomePage";
 import WritingModule from "@/src/components/WritingModule";
 import Dashboard from "@/src/components/Dashboard";
 import IELTSChatbot from "@/src/components/IELTSChatbot";
+import AuthModal, { getSessionUser, logoutDemoUser, type DemoUser, getUserInitials } from "@/src/components/AuthModal";
 
 type TaskType = "task1" | "task2";
 type ModuleType = "writing" | "reading" | "listening" | "speaking";
@@ -139,6 +141,7 @@ export default function App() {
   const [view, setView] = useState<ViewType>("home");
   const [activeModule, setActiveModule] = useState<ModuleType>("writing");
   const [error, setError] = useState<string | null>(null);
+  const [authUser, setAuthUser] = useState<DemoUser | null>(() => getSessionUser());
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -233,6 +236,30 @@ export default function App() {
                 </span>
               </Button>
             </div>
+
+            {authUser && (
+              <div className="group relative flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] pl-1 pr-2 py-1">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 to-violet-600 text-[10px] font-black text-white shadow-lg shadow-indigo-500/20">
+                  {getUserInitials(authUser.name)}
+                </div>
+                <span className="hidden max-w-[110px] truncate text-xs font-bold text-white xl:block">
+                  {authUser.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logoutDemoUser();
+                    setAuthUser(null);
+                    setView("home");
+                  }}
+                  title="Sign out"
+                  aria-label="Sign out"
+                  className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -373,6 +400,10 @@ export default function App() {
         </div>
       </footer>
       <IELTSChatbot />
+
+      {!authUser && (
+        <AuthModal onAuthenticated={(user) => setAuthUser(user)} />
+      )}
     </div>
   );
 }
